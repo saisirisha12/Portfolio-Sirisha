@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./index.css";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
@@ -5,22 +6,48 @@ import { MdOutlineEmail } from "react-icons/md";
 const skillGroups = [
   {
     title: "LANGUAGES",
-    items: ["Java", "Core & Advanced JavaScript / TypeScript", "Python & SQL"],
+    items: ["Java", "TypeScript", "JavaScript", "Python", "C#", "C++", "SQL"],
   },
   {
-    title: "BACKEND",
+    title: "FRONTEND",
+    items: ["React", "Angular", "Next.js", "Redux", "HTML/CSS", "Bootstrap"],
+  },
+  {
+    title: "BACKEND & APIS",
     items: [
-      "Spring Boot & Microservices",
-      "REST APIs & OpenAPI",
-      "Hibernate & JPA",
+      "Spring Boot",
+      "Node.js",
+      "ASP.NET MVC",
+      "REST APIs",
+      "Microservices",
+      "OpenAPI/Swagger",
     ],
   },
   {
-    title: "CLOUD & DATA",
+    title: "DATABASES",
+    items: ["Oracle", "PostgreSQL", "MongoDB", "MySQL", "Aerospike"],
+  },
+  {
+    title: "CLOUD & DEVOPS",
     items: [
-      "AWS S3, EC2, Lambda",
-      "PostgreSQL & MongoDB",
-      "Docker & Kubernetes",
+      "AWS S3",
+      "AWS EC2",
+      "AWS RDS",
+      "Docker",
+      "Kubernetes",
+      "CI/CD",
+      "Git",
+    ],
+  },
+  {
+    title: "TESTING & TOOLS",
+    items: [
+      "JUnit",
+      "Postman",
+      "Unit Testing",
+      "Integration Testing",
+      "Figma",
+      "Agile",
     ],
   },
 ];
@@ -28,40 +55,59 @@ const skillGroups = [
 const experience = [
   {
     company: "Fidelity Investments",
-    role: "Software Engineer",
-    period: "2021 – 2023",
+    role: "Software Engineer Co-op",
+    period: "July 2025 – Jan 2026",
+    summary:
+      "Worked on enterprise financial technology platforms supporting portfolio analytics, investment management workflows, and AI-enabled user experiences. Contributed across backend APIs, frontend modernization, database integrations, and secure access workflows.",
     bullets: [
-      "Architected cloud-native microservices in Java and Spring Boot for high-availability financial data platforms.",
-      "Tuned database queries and CI/CD pipelines, trimming response times and deployment overhead.",
-      "Partnered with product and design to ship features that worked as well for analysts as for end customers.",
+      "Engineered scalable Java Spring Boot microservices and RESTful APIs supporting high-volume financial analytics and investment management workflows.",
+      "Built database-agnostic API layers integrating Aerospike, PostgreSQL, and Oracle, improving data retrieval efficiency and system scalability.",
+      "Modernized internal applications using Angular 18 and Backend-for-Frontend architecture, reducing redundant API calls by 30% and improving frontend responsiveness by 20%.",
+      "Designed secure authentication, authorization, session management, caching, and role-based access workflows supporting 500+ enterprise users.",
+      "Developed extensible API and integration layers supporting AI-driven chatbot and voice-assistant workflows for intelligent portfolio construction.",
     ],
   },
   {
     company: "ICICI Lombard",
     role: "Software Engineer",
-    period: "2019 – 2021",
+    period: "Feb 2021 – Nov 2023",
+    summary:
+      "Built and supported full-stack enterprise applications for policy booking, payment processing, backend services, and cloud-supported production systems. Worked across frontend, backend, APIs, databases, deployments, and production troubleshooting.",
     bullets: [
-      "Led full-stack workflow automation that cut manual claims processing time by roughly 40%.",
-      "Designed resilient database schemas serving millions of policy records at sub-second latency.",
-      "Modernized legacy modules by carrying them into a React-based frontend architecture.",
+      "Led end-to-end development of scalable enterprise applications using Java, C#, ASP.NET MVC, JavaScript, and Oracle SQL, reducing policy booking time by 25%.",
+      "Engineered RESTful APIs and integrated third-party payment gateways, improving transaction reliability and reducing duplicate payment and policy issuance issues.",
+      "Developed secure backend services with authentication, authorization, token handling, API validation, and reusable service components.",
+      "Redesigned Oracle SQL database workflows using indexing and query optimization to improve performance and support increased transaction volumes.",
+      "Deployed and supported production services on AWS EC2, RDS, and S3, improving scalability, availability, and deployment efficiency.",
+      "Mentored interns and new hires through debugging support, onboarding, code reviews, and knowledge-sharing sessions.",
     ],
   },
 ];
 
 const projects = [
-  {
+    {
     title: "Kanbas LMS",
     description:
-      "A full-stack learning management system built with the MERN stack, with modular course navigation and live grading.",
+      "A full-stack learning management system inspired by Canvas, with course navigation, assignments, modules, and user workflows.",
+    stack: "React · Node.js · Next.js",
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
   },
   {
     title: "Stock Portfolio Simulator",
     description:
-      "A Java + Spring Boot simulator that models investment strategies against real-time market data.",
+      "A Java-based simulator for modeling portfolios, transactions, and investment strategies using object-oriented design and unit-tested workflows.",
+    stack: "Java · OOP · JUnit",
     image:
       "https://images.unsplash.com/photo-1642790551116-18e150f248e4?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    title: "Smarter Code Search",
+    description:
+      "A hybrid retrieval system for developer queries combining BM25 lexical search and CodeBERT semantic search, evaluated using precision, recall, and MRR.",
+    stack: "Python · CodeBERT · BM25 · CodeSearchNet",
+    image:
+      "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=900&q=80",
   },
 ];
 
@@ -75,12 +121,18 @@ const education = [
   {
     label: "UNDERGRADUATE",
     school: "Manipal Institute of Technology",
-    degree: "B.Tech in Computer Science",
+    degree: "B.Tech in Electronics and Communication · GPA 3.6",
     location: "Manipal, India",
   },
 ];
 
 export default function App() {
+  const [openExperience, setOpenExperience] = useState(null);
+
+  function toggleExperience(company) {
+    setOpenExperience((current) => (current === company ? null : company));
+  }
+
   return (
     <>
       <header className="navbar">
@@ -90,7 +142,8 @@ export default function App() {
           </a>
 
           <div className="nav-links">
-            <a href="#work">Work</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
           </div>
@@ -103,14 +156,16 @@ export default function App() {
             <p className="status-pill">· OPEN TO FULL-TIME OPPORTUNITIES</p>
 
             <h1>
-              Hi! I'm <span>Sai Sirisha Volety</span>
+              Hi, I&apos;m <span>Sai Sirisha Volety</span>
             </h1>
 
             <p className="hero-copy">
-              I am a recent Computer Science graduate from Northeastern
-              University with nearly three years of experience across
-              Java/Spring Boot backends, React and Angular interfaces, and
-              enterprise applications in finance and insurance.
+              I&apos;m a Software Engineer with a Master&apos;s in Computer
+              Science from Northeastern University and nearly three years of
+              experience building full-stack applications across finance and
+              insurance. My work spans Java/Spring Boot backends, React and
+              Angular interfaces, RESTful APIs, databases, and production-ready
+              enterprise systems.
             </p>
 
             <a
@@ -121,60 +176,64 @@ export default function App() {
             >
               View Resume ↗
             </a>
+
             <div className="hero-socials" aria-label="Social links">
-  <a
-    href="https://github.com/your-github-username"
-    target="_blank"
-    rel="noreferrer"
-    aria-label="GitHub"
-  >
-    <FaGithub />
-  </a>
+              <a
+                href="https://github.com/saisirisha12"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub"
+              >
+                <FaGithub />
+              </a>
 
-  <a
-    href="https://www.linkedin.com/in/your-linkedin-username"
-    target="_blank"
-    rel="noreferrer"
-    aria-label="LinkedIn"
-  >
-    <FaLinkedinIn />
-  </a>
+              <a
+                href="https://www.linkedin.com/in/sai-sirisha-volety-810791187/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedinIn />
+              </a>
 
-  <a href="mailto:saisirisha1299@gmail.com" aria-label="Email">
-    <MdOutlineEmail />
-  </a>
-</div>
-            
+              <a href="mailto:saisirisha1299@gmail.com" aria-label="Email">
+                <MdOutlineEmail />
+              </a>
+            </div>
           </div>
         </section>
 
         <section id="about" className="about-section section-grid">
           <div className="section-copy">
-            <h2>A quiet, detail-led builder.</h2>
+            <h2>About Me</h2>
 
             <p>
-              I think the best software is a little like a well-made object:
-              sturdy, intentional, and rewarding the closer you look. My work
-              pairs the rigor of an MSCS at Northeastern with an engineer&apos;s
-              instinct for the small decisions that shape an entire experience.
+              I like building software that feels thoughtful from the inside
+              out. Clean structure, reliable behavior, and small design
+              decisions all matter because they shape the experience people
+              ultimately rely on. As a Software Engineer and recent MSCS
+              graduate from Northeastern, I build full-stack applications,
+              backend services, and data-driven systems with that same mindset.
             </p>
 
             <p>
               I&apos;m a problem solver who likes understanding the business
-              before writing the first line. Empathetic with people, exacting
-              with code. Off-screen, you&apos;ll usually find me with a book, a
-              slow coffee, or a dog at my feet.
+              before writing the first line of code. I care about clean
+              architecture, thoughtful user experiences, and the engineering
+              details that make a product reliable, maintainable, and genuinely
+              useful. Outside of engineering, I enjoy painting, dancing, and
+              singing, which keep me creative and bring balance into the way I
+              work.
             </p>
           </div>
 
-          <div
-            className="about-image"
-            aria-label="Book and coffee by a window"
-          />
+          <div className="about-image">
+            <img src="/Photo.png" alt="Animated coding illustration" />
+          </div>
         </section>
 
         <section className="skills-section">
-          <h2>Technical arsenal</h2>
+          <h2>Technical Skills</h2>
 
           <div className="skills-grid">
             {skillGroups.map((group) => (
@@ -191,46 +250,65 @@ export default function App() {
           </div>
         </section>
 
-        <section className="experience-section">
-          <h2>Professional chapter</h2>
+        <section id="experience" className="experience-section">
+          <p className="section-kicker">Professional Work</p>
+          <h2>Professional Experience</h2>
 
           <div className="timeline">
-            {experience.map((item) => (
-              <article className="timeline-item" key={item.company}>
-                <div className="timeline-dot" />
+            {experience.map((item) => {
+              const isOpen = openExperience === item.company;
 
-                <div className="timeline-content">
-                  <div className="timeline-header">
-                    <div>
+              return (
+                <article className="timeline-item" key={item.company}>
+                  <div className="timeline-dot" />
+
+                  <div className="timeline-content">
+                    <div className="timeline-header">
                       <h3>{item.company}</h3>
+                      <p className="experience-meta">
+                        {item.role} · {item.period}
+                      </p>
                     </div>
 
-                    <p>
-                      {item.role} · {item.period}
-                    </p>
-                  </div>
+                    <p className="experience-summary">{item.summary}</p>
 
-                  <ul>
-                    {item.bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
+                    <button
+                      className={`experience-toggle ${isOpen ? "open" : ""}`}
+                      type="button"
+                      onClick={() => toggleExperience(item.company)}
+                      aria-expanded={isOpen}
+                    >
+                      <span>{isOpen ? "Hide details" : "View details"}</span>
+                      <span className="toggle-arrow">↓</span>
+                    </button>
+
+                    <div
+                      className={`experience-details ${isOpen ? "open" : ""}`}
+                    >
+                      <ul>
+                        {item.bullets.map((bullet) => (
+                          <li key={bullet}>{bullet}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
-        <section id="work" className="projects-section">
-          <h2>Selected works</h2>
+        <section id="projects" className="projects-section">
+          <p className="section-kicker">Personal Work</p>
+          <h2>Projects</h2>
 
           <div className="projects-grid">
             {projects.map((project) => (
               <article className="project-card" key={project.title}>
                 <img src={project.image} alt={project.title} />
 
+                <p className="project-stack">{project.stack}</p>
                 <h3>{project.title}</h3>
-
                 <p>{project.description}</p>
               </article>
             ))}
@@ -261,14 +339,18 @@ export default function App() {
             </a>
 
             <a
-              href="https://www.linkedin.com/"
+              href="https://www.linkedin.com/in/sai-sirisha-volety-810791187/"
               target="_blank"
               rel="noreferrer"
             >
               LinkedIn
             </a>
 
-            <a href="https://github.com/" target="_blank" rel="noreferrer">
+            <a
+              href="https://github.com/saisirisha12"
+              target="_blank"
+              rel="noreferrer"
+            >
               GitHub
             </a>
 
