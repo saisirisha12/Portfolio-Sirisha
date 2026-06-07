@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { MdOutlineEmail } from "react-icons/md";
+import { MdOutlineEmail, MdOutlineWbSunny, MdDarkMode } from "react-icons/md";
 
 const skillGroups = [
   {
@@ -56,7 +56,7 @@ const experience = [
   {
     company: "Fidelity Investments",
     role: "Software Engineer Co-op",
-    period: "July 2025 – Jan 2026",
+    period: "July 2025 - Jan 2026",
     summary:
       "Worked on enterprise financial technology platforms supporting portfolio analytics, investment management workflows, and AI-enabled user experiences. Contributed across backend APIs, frontend modernization, database integrations, and secure access workflows.",
     bullets: [
@@ -70,7 +70,7 @@ const experience = [
   {
     company: "ICICI Lombard",
     role: "Software Engineer",
-    period: "Feb 2021 – Nov 2023",
+    period: "Feb 2021 - Nov 2023",
     summary:
       "Built and supported full-stack enterprise applications for policy booking, payment processing, backend services, and cloud-supported production systems. Worked across frontend, backend, APIs, databases, deployments, and production troubleshooting.",
     bullets: [
@@ -85,29 +85,59 @@ const experience = [
 ];
 
 const projects = [
-    {
+  {
+    title: "EmpowHer",
+    description:
+      "An AI-assisted platform for women-led founders that supports investor readiness, pitch deck creation, founder profiles, and mentor/investor matching.",
+    stack: "Angular · Spring Boot · MySQL · LLM APIs",
+    image: "/EmpowHer.jpg",
+    link: "https://github.com/saisirisha12/EmpowHer-SheHack",
+    linkLabel: "GitHub",
+  },
+  {
+    title: "Guardians Gambit",
+    description:
+      "A Python-based multi-agent reinforcement learning game where thief and guard agents learn competing strategies using Q-tables, rewards, penalties, and staged training workflows.",
+    stack: "Python · Reinforcement Learning · Q-Learning · Multi-Agent Systems",
+    image: "/GuardiansGambit.jpg",
+    link: "https://github.com/saisirisha12/Guardian-Gambit",
+    linkLabel: "GitHub",
+  },
+  {
     title: "Kanbas LMS",
     description:
       "A full-stack learning management system inspired by Canvas, with course navigation, assignments, modules, and user workflows.",
     stack: "React · Node.js · Next.js",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
+    image: "/kanbas.jpg",
+    link: "https://github.com/saisirisha12/kanbas-react-web-app",
+    linkLabel: "GitHub",
   },
   {
     title: "Stock Portfolio Simulator",
     description:
       "A Java-based simulator for modeling portfolios, transactions, and investment strategies using object-oriented design and unit-tested workflows.",
     stack: "Java · OOP · JUnit",
-    image:
-      "https://images.unsplash.com/photo-1642790551116-18e150f248e4?auto=format&fit=crop&w=900&q=80",
+    image: "/StockSimulator.jpg",
+    link: null,
+    linkLabel: "Code available upon request",
   },
   {
     title: "Smarter Code Search",
     description:
       "A hybrid retrieval system for developer queries combining BM25 lexical search and CodeBERT semantic search, evaluated using precision, recall, and MRR.",
     stack: "Python · CodeBERT · BM25 · CodeSearchNet",
-    image:
-      "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=900&q=80",
+    image: "/CodeSearch.jpg",
+    link: "https://github.com/saisirisha12/Smarter-Code-Search",
+    linkLabel: "GitHub",
+  },
+  {
+    title: "UHCS Post-Visit Care",
+    description:
+      "A mobile HCI project designed to help Northeastern students record clinic visits, follow care routines, track symptoms, and get post-visit guidance through a care assistant.",
+    stack: "HCI · Mobile Design · Prototyping · Heuristic Evaluation",
+    image: "/UHCSPostVisitCare.jpg",
+    link: "https://www.figma.com/proto/L1LIGkqbW3jVZsOTxc3pv1/Group-8---UHCS-Design?node-id=625-5787&t=FrgWEt9sJFrBd1iS-1",
+    linkLabel: "Figma",
   },
 ];
 
@@ -128,10 +158,24 @@ const education = [
 
 export default function App() {
   const [openExperience, setOpenExperience] = useState(null);
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("portfolio-theme") || "dark";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("portfolio-theme", theme);
+  }, [theme]);
 
   function toggleExperience(company) {
     setOpenExperience((current) => (current === company ? null : company));
   }
+
+  function toggleTheme() {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
+  }
+
+  const isDark = theme === "dark";
 
   return (
     <>
@@ -141,11 +185,33 @@ export default function App() {
             Sai Sirisha
           </a>
 
-          <div className="nav-links">
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
+          <div className="nav-actions">
+            <div className="nav-links-shell">
+              <div className="nav-links">
+                <a href="#experience" className="nav-link-pill active">
+                  Experience
+                </a>
+                <a href="#projects" className="nav-link-pill">
+                  Projects
+                </a>
+                <a href="#about" className="nav-link-pill">
+                  About
+                </a>
+                <a href="#contact" className="nav-link-pill">
+                  Contact
+                </a>
+              </div>
+            </div>
+
+            <button
+              className="theme-toggle"
+              type="button"
+              onClick={toggleTheme}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDark ? <MdOutlineWbSunny /> : <MdDarkMode />}
+            </button>
           </div>
         </div>
       </header>
@@ -305,11 +371,30 @@ export default function App() {
           <div className="projects-grid">
             {projects.map((project) => (
               <article className="project-card" key={project.title}>
-                <img src={project.image} alt={project.title} />
+                <div className="project-image-wrap">
+                  <img src={project.image} alt={project.title} />
+                </div>
 
-                <p className="project-stack">{project.stack}</p>
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
+                <div className="project-content">
+                  <p className="project-stack">{project.stack}</p>
+                  <h3>{project.title}</h3>
+                  <p className="project-description">{project.description}</p>
+
+                  {project.link ? (
+                    <a
+                      className="project-link"
+                      href={project.link}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      View {project.linkLabel} ↗
+                    </a>
+                  ) : (
+                    <span className="project-link project-link-disabled">
+                      {project.linkLabel}
+                    </span>
+                  )}
+                </div>
               </article>
             ))}
           </div>
@@ -353,8 +438,6 @@ export default function App() {
             >
               GitHub
             </a>
-
-            <p>Boston, MA</p>
           </div>
         </section>
       </main>
